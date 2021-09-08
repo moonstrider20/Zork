@@ -4,6 +4,8 @@ namespace Zork
 {
     class Program
     {
+        private static string Location => Rooms[locationColumn];
+
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Zork!");
@@ -11,7 +13,7 @@ namespace Zork
             Commands command = Commands.UNKNOWN;
             while (command != Commands.QUIT)
             {
-                Console.Write("> ");
+                Console.Write($"{Location}\n> ");
                 command = ToCommand(Console.ReadLine().Trim());
 
                 string outputString;
@@ -24,7 +26,7 @@ namespace Zork
                     case Commands.SOUTH:
                     case Commands.EAST:
                     case Commands.WEST:
-                        outputString = $"You moved {command}.";
+                        outputString = Move(command) ? $"You moved {command}." : "The way is shut!";
                         break;
                     case Commands.QUIT:
                         outputString = ("Thank you for playing!");
@@ -39,5 +41,30 @@ namespace Zork
         }
 
         private static Commands ToCommand(string commandString) => (Enum.TryParse<Commands>(commandString, true, out Commands result) ? result : Commands.UNKNOWN);
+
+        private static bool Move(Commands command)
+        {
+            bool didMove = false;
+
+            switch (command)
+            {
+                case Commands.NORTH:
+                case Commands.SOUTH:
+                    break;
+                case Commands.EAST when locationColumn < Rooms.Length -1:
+                    locationColumn++;
+                    didMove = true;
+                    break;
+                case Commands.WEST when locationColumn > 0:
+                    locationColumn--;
+                    didMove = true;
+                    break;
+            }
+
+            return didMove;
+        }
+
+        private static string[] Rooms = {"Forest", "West of House", "Behind House", "Clearing", "Canyon View"};
+        private static int locationColumn = 1;
     }
 }
