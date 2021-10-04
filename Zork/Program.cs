@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Zork
 {
@@ -12,7 +13,7 @@ namespace Zork
 
         static void Main(string[] args)
         {
-            const string defaultRoomsFilename = "Rooms.txt";
+            const string defaultRoomsFilename = "Rooms.json";
             string roomsDescriptionsFilename = args.Length > 0 ? args[(int)CommandLineArguments.RoomsFilename] : defaultRoomsFilename;
             InitializedRoomDescription(roomsDescriptionsFilename);
 
@@ -113,20 +114,25 @@ namespace Zork
 
         private static void InitializedRoomDescription(string roomsFilename)
         {
-            const string delimiter = "##";
-            const int expectedFieldCount = 2;
-
-            string[] lines = File.ReadAllLines(roomsFilename);
-
-            foreach (string line in lines)
+            var rooms = JsonConvert.DeserializedObject<Room[]>(File.ReadAllText(roomsFilename));
+            foreach (Room room in Rooms)
             {
-                string[] fields = line.Split(delimiter);
-                Assert.IsTrue(fields.Length == expectedFieldCount, "Invalid record.");
-
-                (string name, string description) = (fields[(int)Fields.Name], fields[(int)Fields.Description]);
-
-                RoomMap[name].Description = description;
+                RoomMap.Add(room.Name, room);
             }
+            //const string delimiter = "##";
+            //const int expectedFieldCount = 2;
+
+            //string[] lines = File.ReadAllLines(roomsFilename);
+
+            //foreach (string line in lines)
+            //{
+            //    string[] fields = line.Split(delimiter);
+            //    Assert.IsTrue(fields.Length == expectedFieldCount, "Invalid record.");
+
+            //    (string name, string description) = (fields[(int)Fields.Name], fields[(int)Fields.Description]);
+
+            //    RoomMap[name].Description = description;
+            //}
         }
 
         private static readonly List<Commands> Directions = new List<Commands>
