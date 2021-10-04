@@ -10,15 +10,15 @@ namespace Zork
     {
         public static Room CurrentRoom => Rooms[Location.Row,Location.Column];
 
-        //private static readonly Dictionary<string, Room> RoomMap;
+        private static readonly Dictionary<string, Room> RoomMap;
 
         static void Main(string[] args)
         {
-            //InitializedRoomDescription();
-            Console.WriteLine("Welcome to Zork!");
+            const string defaultRoomsFilename = "Rooms.txt";
+            string roomsDescriptionsFilename = args.Length > 0 ? args[(int)CommandLineArguments.RoomsFilename] : defaultRoomsFilename;
+            InitializedRoomDescription(roomsDescriptionsFilename);
 
-            const string roomDescriptionsFilename = "Rooms.txt";
-            InitializedRoomDescription(roomDescriptionsFilename);
+            Console.WriteLine("Welcome to Zork!");
 
             Room previousRoom = null;
 
@@ -99,36 +99,36 @@ namespace Zork
             { new Room("Dense Woods"), new Room("North of House"), new Room("Clearing") }
         };
 
-        private static void InitializedRoomDescription(string roomsFilename)
+        static Program()
         {
-            var roomMap = new Dictionary<string, Room>();
+            RoomMap = new Dictionary<string, Room>();
             foreach (Room room in Rooms)
             {
-                roomMap.Add(room.Name, room);
+                RoomMap[room.Name] = room;
             }
+        }
 
-            string roomsJsonString = File.ReadAllText(roomsFilename);
-            Room[] rooms = JsonConvert.DeserializeObject<Room[]>(roomsJsonString);
+        private enum CommandLineArguments
+        {
+            RoomsFilename = 0
+        }
 
-            foreach (Room room in rooms)
+        private static void InitializedRoomDescription(string roomsFilename)
+        {
+            const string delimiter = "##";
+            const int expectedFieldCount = 2;
+
+            string[] lines = File.ReadAllLines(roomsFilename);
+
+            foreach (string line in lines)
             {
-                roomMap[room.Name].Description = room.Description;
+                string[] fields = line.Split(delimiter);
+                Assert.IsTrue(fields.Length == expectedFieldCount, "Invalid record.");
+
+                (string name, string description) = (fields[(int)Fields.Name], fields[(int)Fields.Description]);
+
+                RoomMap[name].Description = description;
             }
-
-            //const string delimiter = "##";
-            //const int expectedFieldCount = 2;
-
-            //string [] lines = File.ReadAllLines(roomsFilename);
-
-            //foreach (string line in lines)
-            //{
-            //    string[] fields = line.Split(delimiter);
-            //    Assert.IsTrue(fields.Length == expectedFieldCount, "Invalid record.");
-
-            //    (string name, string description) = (fields[(int)Fields.Name], fields[(int)Fields.Description]);
-
-            //    roomMap[name].Description = description;
-            //}
         }
 
         private static readonly List<Commands> Directions = new List<Commands>
