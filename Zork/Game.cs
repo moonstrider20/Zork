@@ -43,7 +43,7 @@ namespace Zork
                         break;
 
                     case Commands.LOOK:
-                        Console.Write(Player.Location.Description);
+                        Console.WriteLine(Player.Location.Description);
                         break;
 
                     case Commands.NORTH:
