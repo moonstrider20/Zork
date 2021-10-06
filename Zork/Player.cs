@@ -11,6 +11,12 @@ namespace Zork
         public Room Location { get; private set; }
 
         [JsonIgnore]
+        public int Moves { get; set; }
+
+        [JsonIgnore]
+        public int Score { get; set; }
+
+        [JsonIgnore]
         public string LocationName
         {
             get
