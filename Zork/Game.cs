@@ -35,7 +35,6 @@ namespace Zork
 
                 Console.Write("\n> ");
                 Commands command = ToCommand(Console.ReadLine().Trim());
-                Player.Moves++;
 
                 switch (command)
                 {
@@ -58,16 +57,8 @@ namespace Zork
                         }
                         break;
 
-                    case Commands.REWARD:
-                        Player.Score++;
-                        break;
-                    case Commands.SCORE:
-                        Console.WriteLine($"Your score would be {Player.Score} in {Player.Moves} move(s).");
-                        break;
-
                     default:
                         Console.WriteLine("Unknown command.");
-                        Player.Moves--;
                         break;
                 }
             }
