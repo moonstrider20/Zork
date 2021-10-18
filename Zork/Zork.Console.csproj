@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Zork.Common\Zork.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Rooms.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
