@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Zork": {
+      "commandName": "Project",
+      "sqlDebugging": true,
+      "nativeDebugging": true,
+      "jsWebView2Debugging": false
+    }
+  }
+}

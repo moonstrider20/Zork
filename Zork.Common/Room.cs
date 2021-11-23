@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace Zork
 {
-    public class Room : IEquatable<Room>
+    public class Room : IEquatable<Room>//, INotifyPropertyChanged
     {
+        //public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonProperty(Order = 1)]
         public string Name { get; private set; }
 

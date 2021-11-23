@@ -1,12 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using System.Text;
 
 namespace Zork
 {
     public class Game
     {
-        public World World { get; private set; }
+        [JsonIgnore]
+        public static Game Instance { get; private set; }
+        public World World { get; set; }
 
         [JsonIgnore]
         public Player Player { get; private set; }
@@ -14,73 +21,142 @@ namespace Zork
         [JsonIgnore]
         private bool IsRunning { get; set; }
 
+        [JsonIgnore]
+        public CommandManager CommandManager { get; }
+
+        [JsonIgnore]
+        public IInputService Input { get; private set; }
+
+        [JsonIgnore]
+        public IOutputService Output { get; private set; }
+
         public Game(World world, Player player)
         {
             World = world;
             Player = player;
         }
 
-        public void Run()
-        {
-            IsRunning = true;
-            Room previousRoom = null;
-            while (IsRunning)
-            {
-                Console.WriteLine(Player.Location);
-                if (previousRoom != Player.Location)
-                {
-                    Console.WriteLine(Player.Location.Description);
-                    previousRoom = Player.Location;
-                }
+        public Game() => CommandManager = new CommandManager();
 
-                Console.Write("\n> ");
-                Commands command = ToCommand(Console.ReadLine().Trim());
+        public static void StartFromFile(string gameFilename, IInputService input,IOutputService output)
+        {
+            if (!File.Exists(gameFilename))
+            {
+                throw new FileNotFoundException("Expected file.", gameFilename);
+            }
+
+            Start(File.ReadAllText(gameFilename), input, output);
+        }
+       public static void Start(string gameJsonString, IInputService input,IOutputService output)
+        {
+            Instance = Load(gameJsonString);
+            Instance.Input = input;
+            Instance.Output = output;
+            Instance.LoadCommands();
+            Instance.DisplayWelcomeMessage();
+            Instance.CommandManager.PerformCommand(Game.Instance, "LOOK");
+            Instance.IsRunning = true;
+            Instance.Input.InputRecieved += Instance.InputRecievedHandler;
+        }
+
+        public void InputRecievedHandler(object sender, string inputString)
+        {
+            Room previousRoom = Player.Location;
+            if (CommandManager.PerformCommand(this, inputString.Trim()))
+            {
                 Player.Moves++;
 
-                switch (command)
+                if (previousRoom != Player.Location)
                 {
-                    case Commands.QUIT:
-                        IsRunning = false;
-                        break;
-
-                    case Commands.LOOK:
-                        Console.WriteLine(Player.Location.Description);
-                        break;
-
-                    case Commands.NORTH:
-                    case Commands.SOUTH:
-                    case Commands.EAST:
-                    case Commands.WEST:
-                        Directions direction = Enum.Parse<Directions>(command.ToString(), true); //Directions direction = (Directions)command;
-                        if (Player.Move(direction) == false)
-                        {
-                            Console.WriteLine("The way is shut!");
-                        }
-                        break;
-
-                    case Commands.REWARD:
-                        Player.Score++;
-                        break;
-                    case Commands.SCORE:
-                        Console.WriteLine($"Your score would be {Player.Score} in {Player.Moves} move(s).");
-                        break;
-
-                    default:
-                        Console.WriteLine("Unknown command.");
-                        Player.Moves--;
-                        break;
+                    CommandManager.PerformCommand(this, "LOOK");
                 }
+            }
+            else
+            {
+                Output.WriteLine("That's not a verb I recognize.");
             }
         }
 
-        public static Game Load(string filename)
+        public void Restart()
         {
-            Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(filename));
+            IsRunning = false;
+            mIsRestarting = true;
+            Console.Clear();
+        }
+
+        public void Quit() => IsRunning = false;
+        public static Game Load(string jsonString)
+        {
+            Game game = JsonConvert.DeserializeObject<Game>(jsonString);
             game.Player = game.World.SpawnPlayer();
 
             return game;
         }
+        private void LoadCommands()
+        {
+            var commandsMethods = (from type in Assembly.GetExecutingAssembly().GetTypes()
+                                   from method in type.GetMethods()
+                                   let attribute = method.GetCustomAttribute<CommandAttribute>()
+                                   where type.IsClass && type.GetCustomAttribute<CommandClassAttribute>() != null
+                                   where attribute != null
+                                   select new Command(attribute.CommandName, attribute.Verbs,
+                                   (Action<Game, CommandContext>)Delegate.CreateDelegate(typeof(Action<Game, CommandContext>),method)));
+            CommandManager.AddCommands(commandsMethods);
+        }
 
-        private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, true, out Commands result) ? result : Commands.UNKNOWN;
+        private void LoadScripts()
+        {
+//            foreach (string file in Directory.EnumerateFiles(ScriptDirectory, ScriptFileExtension))
+//            {
+//                try
+//                {
+//                    var scriptOptions = ScriptOptions.Default.AddReferences(Assembly.GetExecutingAssembly());
+//#if DEBUG
+//                    scriptOptions = scriptOptions.WithEmitDebugInformation(true)
+//                        .WithFilePath(new FileInfo(file).FullName)
+//                        .WithFileEncoding(Encoding.UTF8);
+//#endif
+//                    string script = File.ReadAllText(file);
+//                    CSharpScript.RunAsync(script, scriptOptions).Wait();
+//                }
+//                catch (Exception ex)
+//                {
+//                    Output.WriteLine($"Error compiling script: {file} Error: {ex.Message}");
+//                }
+//            }
+        }
+
+        public bool ConfirmAction(string prompt)
+        {
+            return true;
+            //Instance.Output.Write(prompt);
+            //while (true)
+            //{
+            //    string response = Console.ReadLine().Trim().ToUpper();
+            //    if (response == "YES" || response == "Y")
+            //    {
+            //        return true;
+            //    }
+            //    else if (response == "NO" || response == "N")
+            //    {
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        Instance.Output.Write("Please answer yes or no.> ");
+            //    }
+            //}
+        }
+
+        private void DisplayWelcomeMessage() => Output.WriteLine(WelcomeMessage);
+
+        //public static readonly Random Random = new Random();
+        //private static readonly string ScriptDirectory = "Scripts";
+        //private static readonly string ScriptFileExtension = ".csx";
+
+        [JsonProperty]
+        private string WelcomeMessage = null;
+
+        private bool mIsRestarting;
     }
 }
