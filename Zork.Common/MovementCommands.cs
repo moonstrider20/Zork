@@ -13,13 +13,13 @@ namespace Zork
         public static void East(Game game, CommandContext commandContext) => Move(game, Directions.East);
         [Command("WEST", new string[] { "WEST", "W" })]
         public static void West(Game game, CommandContext commandContext) => Move(game, Directions.West);
-        
+
         private static void Move(Game game, Directions direction)
         {
             bool playerMoved = game.Player.Move(direction);
             if (playerMoved == false)
             {
-                Console.WriteLine("The way is shut!");
+                game.Output.WriteLine("The way is shut!");
             }
         }
     }

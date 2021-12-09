@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zork.Console", "Zork\Zork.Console.csproj", "{FDA0D870-B5EA-4410-9CD2-50B917970EBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zork.Common", "Zork.Common\Zork.Common.csproj", "{238F84BC-67DA-4734-AB48-184970C247F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zork.Common", "Zork.Common\Zork.Common.csproj", "{238F84BC-67DA-4734-AB48-184970C247F1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zork.Builder.WinForms", "Zork.Builder.WinForms\Zork.Builder.WinForms.csproj", "{CCD5B569-63CC-4DEC-9A03-EFA64CEF7093}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zork.Console", "Zork.Console\Zork.Console.csproj", "{9E624681-933E-4B6A-98B9-DB861CB077FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FDA0D870-B5EA-4410-9CD2-50B917970EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDA0D870-B5EA-4410-9CD2-50B917970EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDA0D870-B5EA-4410-9CD2-50B917970EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDA0D870-B5EA-4410-9CD2-50B917970EBA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{238F84BC-67DA-4734-AB48-184970C247F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{238F84BC-67DA-4734-AB48-184970C247F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{238F84BC-67DA-4734-AB48-184970C247F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{238F84BC-67DA-4734-AB48-184970C247F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCD5B569-63CC-4DEC-9A03-EFA64CEF7093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCD5B569-63CC-4DEC-9A03-EFA64CEF7093}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCD5B569-63CC-4DEC-9A03-EFA64CEF7093}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCD5B569-63CC-4DEC-9A03-EFA64CEF7093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E624681-933E-4B6A-98B9-DB861CB077FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E624681-933E-4B6A-98B9-DB861CB077FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E624681-933E-4B6A-98B9-DB861CB077FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E624681-933E-4B6A-98B9-DB861CB077FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

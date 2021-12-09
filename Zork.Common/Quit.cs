@@ -1,4 +1,6 @@
-﻿namespace Zork
+﻿using System;
+
+namespace Zork
 {
     [CommandClass]
     public static class QuitCommand

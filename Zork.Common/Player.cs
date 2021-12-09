@@ -1,10 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Zork
 {
     public class Player
     {
         public World World { get; }
+
+        //[JsonProperty]
+        //public int MaxInventory; 
 
         [JsonIgnore]
         public Room Location { get; private set; }
@@ -46,5 +50,7 @@ namespace Zork
 
             return isValidMove;
         }
+
+        public Dictionary<string, Item> Inventory { get; private set; } = new Dictionary<string, Item>();
     }
 }

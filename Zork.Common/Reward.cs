@@ -1,4 +1,6 @@
-﻿namespace Zork
+﻿using System;
+
+namespace Zork
 {
 
     [CommandClass]
@@ -9,7 +11,7 @@
         public static void Reward(Game game, CommandContext commandContext)
         {
             game.Player.Score++;
-            game.Output.WriteLine("Rewarding yourself are you?.");
+            game.Output.WriteLine("Rewarding yourself are you?");
         }
     }
 }

@@ -22,7 +22,13 @@ namespace Zork
         [JsonIgnore]
         public IReadOnlyDictionary<Directions, Room> Neighbors { get; private set; }
 
-        public static bool operator == (Room lhs, Room rhs)
+        [JsonProperty(PropertyName = "Items", Order = 4)]
+        public List<string> ItemNames { get; set; }
+
+        [JsonIgnore]
+        public Dictionary<string, Item> Items { get; private set; } = new Dictionary<string, Item>();
+
+        public static bool operator ==(Room lhs, Room rhs)
         {
             if (ReferenceEquals(lhs, rhs))
             {
@@ -52,5 +58,20 @@ namespace Zork
                                                                  where room != null
                                                                  select (Direction: entry.Key, Room: room))
                                                                  .ToDictionary(pair => pair.Direction, pair => pair.Room);
+
+        public void UpdateItems(World world)
+        {
+            foreach (var entry in ItemNames)
+            {
+                for (int itemEntry = 0; itemEntry < world.Items.Count; itemEntry++)
+                {
+                    if (entry == world.Items[itemEntry].Name.ToString())
+                    {
+                        Items.Add(entry, world.Items[itemEntry]);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

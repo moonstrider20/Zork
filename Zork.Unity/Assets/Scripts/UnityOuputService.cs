@@ -16,6 +16,10 @@ public class UnityOuputService : MonoBehaviour, IOutputService
     private int MaxLines;
     [SerializeField]
     private TextMeshProUGUI CurrentLocationText;
+    [SerializeField]
+    private TextMeshProUGUI CurrentScoreText;
+    [SerializeField]
+    private TextMeshProUGUI CurrentMovesText;
 
     private readonly List<GameObject> _line;
 
@@ -70,8 +74,10 @@ public class UnityOuputService : MonoBehaviour, IOutputService
         _line.Add(textObject.gameObject);
     }
 
-    //void Update()
-    //{
-    //    string locationString = CurrentLocationText.text;
-    //}
+    void Update()
+    {
+        CurrentLocationText.text = Game.Instance.Player.Location.Name;
+        CurrentScoreText.text = $"Score: {Game.Instance.Player.Score.ToString()}";
+        CurrentMovesText.text = $"Moves: {Game.Instance.Player.Moves.ToString()}";
+    }
 }

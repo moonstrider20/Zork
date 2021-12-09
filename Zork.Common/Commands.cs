@@ -10,6 +10,8 @@
         WEST,
         REWARD,
         SCORE,
+        TAKE,
+        DROP,
         UNKNOWN
     }
 }

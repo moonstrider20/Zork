@@ -1,7 +1,8 @@
 ﻿{
-    "WelcomeMessage":  "Welcome to ZORK.",
+    "WelcomeMessage": "Welcome to ZORK.",
     "World": {
         "StartingLocation": "West of House",
+        "MaxInventory": 5,
         "Rooms": [
             {
                 "Name": "West of House",
@@ -10,7 +11,12 @@
                     "North": "North of House",
                     "South": "South of House",
                     "West": "Forest 1"
-                }
+                },
+                "Items": [
+                    "Mat",
+                    "Egg",
+                    "Lamp"
+                ]
             },
             {
                 "Name": "North of House",
@@ -19,7 +25,11 @@
                     "North": "Forest 2",
                     "East": "Behind House",
                     "West": "West of House"
-                }
+                },
+                "Items": [
+                    "Jade",
+                    "Bottle"
+                ]
             },
             {
                 "Name": "South of House",
@@ -27,7 +37,10 @@
                 "Neighbors": {
                     "East": "Behind House",
                     "West": "West of House"
-                }
+                },
+                "Items": [
+                    "Diamond"
+                ]
             },
             {
                 "Name": "Behind House",
@@ -36,7 +49,10 @@
                     "North": "North of House",
                     "East": "Clearing",
                     "South": "South of House"
-                }
+                },
+                "Items": [
+
+                ]
             },
             {
                 "Name": "Forest 1",
@@ -44,7 +60,10 @@
                 "Neighbors": {
                     "South": "Forest 3",
                     "East": "West of House"
-                }
+                },
+                "Items": [
+
+                ]
             },
             {
                 "Name": "Forest 2",
@@ -52,7 +71,10 @@
                 "Neighbors": {
                     "South": "Clearing",
                     "East": "Clearing"
-                }
+                },
+                "Items": [
+
+                ]
             },
             {
                 "Name": "Forest 3",
@@ -60,7 +82,10 @@
                 "Neighbors": {
                     "North": "South of House",
                     "East": "Clearing"
-                }
+                },
+                "Items": [
+
+                ]
             },
             {
                 "Name": "Clearing",
@@ -68,7 +93,48 @@
                 "Neighbors": {
                     "West": "Forest 2",
                     "South": "Forest 3"
-                }
+                },
+                "Items": [
+
+                ]
+            }
+        ],
+        "Items": [
+            {
+                "Name": "Mat",
+                "Description": "A welcome mat that says, 'Welcom to Zork!'",
+                "Points": "2",
+                "Weight": "2"
+            },
+            {
+                "Name": "Egg",
+                "Description": "A jewel-encrusted egg.",
+                "Points": "20",
+                "Weight": "1"
+            },
+            {
+                "Name": "Lamp",
+                "Description": "An old lamp that might work.",
+                "Points": "2",
+                "Weight": "2"
+            },
+            {
+                "Name": "Jade",
+                "Description": "A jade figurine",
+                "Points": "15",
+                "Weight": "1"
+            },
+            {
+                "Name": "Bottle",
+                "Description": "A bottle of water.",
+                "Points": "2",
+                "Weight": "2"
+            },
+            {
+                "Name": "Diamond",
+                "Description": "A huge diamond.",
+                "Points": "25",
+                "Weight": "5"
             }
         ]
     }

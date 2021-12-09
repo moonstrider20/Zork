@@ -1,0 +1,141 @@
+﻿{
+	"WelcomeMessage": "Welcome to ZORK.",
+	"World": {
+		"StartingLocation": "West of House",
+		"MaxInventory": 5,
+		"Rooms": [
+			{
+				"Name": "West of House",
+				"Description": "This is an open field west of a white house, with a boarded front door.",
+				"Neighbors": {
+					"North": "North of House",
+					"South": "South of House",
+					"West": "Forest 1"
+				},
+				"Items": [
+					"Mat",
+					"Egg",
+					"Lamp"
+				]
+			},
+			{
+				"Name": "North of House",
+				"Description": "You are facing the north side of a white house. There is no door here, and all the windows are barred.",
+				"Neighbors": {
+					"North": "Forest 2",
+					"East": "Behind House",
+					"West": "West of House"
+				},
+				"Items": [
+					"Jade",
+					"Bottle"
+				]
+			},
+			{
+				"Name": "South of House",
+				"Description": "You are facing the south side of a white house. There is no door here, and all the windows are barred.",
+				"Neighbors": {
+					"East": "Behind House",
+					"West": "West of House"
+				},
+				"Items": [
+					"Diamond"
+				]
+			},
+			{
+				"Name": "Behind House",
+				"Description": "You are behind the white house. In one corner of the house there is a small window which is slightly ajar.",
+				"Neighbors": {
+					"North": "North of House",
+					"East": "Clearing",
+					"South": "South of House"
+				},
+				"Items": [
+
+				]
+			},
+			{
+				"Name": "Forest 1",
+				"Description": "This is a forest, with trees in all directions around you.",
+				"Neighbors": {
+					"South": "Forest 3",
+					"East": "West of House"
+				},
+				"Items": [
+
+				]
+			},
+			{
+				"Name": "Forest 2",
+				"Description": "This is a dimly lit forest, with large trees all around. One particularly large tree with some low branches stands here.",
+				"Neighbors": {
+					"South": "Clearing",
+					"East": "Clearing"
+				},
+				"Items": [
+
+				]
+			},
+			{
+				"Name": "Forest 3",
+				"Description": "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight.",
+				"Neighbors": {
+					"North": "South of House",
+					"East": "Clearing"
+				},
+				"Items": [
+
+				]
+			},
+			{
+				"Name": "Clearing",
+				"Description": "You are in a clearing, iwht a forest surrounding you on the west and south.",
+				"Neighbors": {
+					"West": "Forest 2",
+					"South": "Forest 3"
+				},
+				"Items": [
+
+				]
+			}
+		],
+		"Items": [
+			{
+				"Name": "Mat",
+				"Description": "A welcome mat that says, 'Welcom to Zork!'",
+				"Points": "2",
+				"Weight": "2"
+			},
+			{
+				"Name": "Egg",
+				"Description": "A jewel-encrusted egg.",
+				"Points": "20",
+				"Weight": "1"
+			},
+			{
+				"Name": "Lamp",
+				"Description": "An old lamp that might work.",
+				"Points": "2",
+				"Weight": "2"
+			},
+			{
+				"Name": "Jade",
+				"Description": "A jade figurine",
+				"Points": "15",
+				"Weight": "1"
+			},
+			{
+				"Name": "Bottle",
+				"Description": "A bottle of water.",
+				"Points": "2",
+				"Weight": "2"
+			},
+			{
+				"Name": "Diamond",
+				"Description": "A huge diamond.",
+				"Points": "25",
+				"Weight": "5"
+			}
+		]
+	}
+}

@@ -25,8 +25,17 @@ public class GameManager : MonoBehaviour
     {
         TextAsset gameJsonAsset = Resources.Load<TextAsset>(ZorkGameFileAssetName);
         Game.Start(gameJsonAsset.text, InputService, OuputService);
+        Game.Instance.CommandManager.PerformCommand(Game.Instance, "LOOK");
     }
 
+    private void Update()
+    {
+        if (Game.Instance.IsRunning == false)
+        {
+            Game.Instance.Output.WriteLine("Thanks for playing!");
+            Application.Quit();
+        }
+    }
     private void PlayerLocationChanged(object sender, Room newRoom)
     {
         CurrentLocationText.text = newRoom.ToString();

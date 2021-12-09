@@ -3,9 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
+//using Microsoft.CodeAnalysis.CSharp.Scripting;
+//using Microsoft.CodeAnalysis.Scripting;
 using System.Text;
+using Zork;
 
 namespace Zork
 {
@@ -19,16 +20,16 @@ namespace Zork
         public Player Player { get; private set; }
 
         [JsonIgnore]
-        private bool IsRunning { get; set; }
-
-        [JsonIgnore]
         public CommandManager CommandManager { get; }
 
         [JsonIgnore]
-        public IInputService Input { get; private set; }
+        public bool IsRunning { get; private set; }
 
         [JsonIgnore]
         public IOutputService Output { get; private set; }
+
+        [JsonIgnore]
+        public IInputService Input { get; private set; }
 
         public Game(World world, Player player)
         {
@@ -38,53 +39,55 @@ namespace Zork
 
         public Game() => CommandManager = new CommandManager();
 
-        public static void StartFromFile(string gameFilename, IInputService input,IOutputService output)
+        public static void StartFromFile(string gameFilename, IInputService input, IOutputService output)
         {
             if (!File.Exists(gameFilename))
             {
                 throw new FileNotFoundException("Expected file.", gameFilename);
             }
 
-            Start(File.ReadAllText(gameFilename), input, output);
+            Start(File.ReadAllText(gameFilename),input, output);
         }
-       public static void Start(string gameJsonString, IInputService input,IOutputService output)
+        public static void Start(string gameJsonString, IInputService input, IOutputService output)
         {
             Instance = Load(gameJsonString);
-            Instance.Input = input;
             Instance.Output = output;
+            Instance.Input = input;
             Instance.LoadCommands();
             Instance.DisplayWelcomeMessage();
-            Instance.CommandManager.PerformCommand(Game.Instance, "LOOK");
             Instance.IsRunning = true;
-            Instance.Input.InputRecieved += Instance.InputRecievedHandler;
+            Instance.Input.InputReceived += Instance.InputReceivedHandler;
         }
 
-        public void InputRecievedHandler(object sender, string inputString)
+        private void InputReceivedHandler(object sender, string inputString)
         {
+            this.inputString = inputString.Trim().Split(delimiter);
             Room previousRoom = Player.Location;
-            if (CommandManager.PerformCommand(this, inputString.Trim()))
-            {
-                Player.Moves++;
-
+            if (CommandManager.PerformCommand(this, this.inputString[0]))
+                {
+                    Player.Moves++;
                 if (previousRoom != Player.Location)
                 {
                     CommandManager.PerformCommand(this, "LOOK");
                 }
-            }
-            else
-            {
-                Output.WriteLine("That's not a verb I recognize.");
-            }
+                }
+                else
+                {
+                Output.WriteLine("That's not a verb I recognize");
+                }
         }
 
         public void Restart()
         {
-            IsRunning = false;
+            //IsRunning = false;
             mIsRestarting = true;
-            Console.Clear();
+            Instance.Output.Clear();
+            Instance.Player.Moves = 0;
+            Instance.Player.Score = 0;
         }
 
         public void Quit() => IsRunning = false;
+
         public static Game Load(string jsonString)
         {
             Game game = JsonConvert.DeserializeObject<Game>(jsonString);
@@ -100,12 +103,13 @@ namespace Zork
                                    where type.IsClass && type.GetCustomAttribute<CommandClassAttribute>() != null
                                    where attribute != null
                                    select new Command(attribute.CommandName, attribute.Verbs,
-                                   (Action<Game, CommandContext>)Delegate.CreateDelegate(typeof(Action<Game, CommandContext>),method)));
+                                   (Action<Game, CommandContext>)Delegate.CreateDelegate(typeof(Action<Game, CommandContext>),
+                                   method)));
             CommandManager.AddCommands(commandsMethods);
         }
 
-        private void LoadScripts()
-        {
+//        private void LoadScripts()
+//        {
 //            foreach (string file in Directory.EnumerateFiles(ScriptDirectory, ScriptFileExtension))
 //            {
 //                try
@@ -124,15 +128,16 @@ namespace Zork
 //                    Output.WriteLine($"Error compiling script: {file} Error: {ex.Message}");
 //                }
 //            }
-        }
+//        }
 
         public bool ConfirmAction(string prompt)
         {
             return true;
-            //Instance.Output.Write(prompt);
+            //not implemented for unity, is for console
+            //Output.Write(prompt);
+            //string response = Input.ReadLine();
             //while (true)
             //{
-            //    string response = Console.ReadLine().Trim().ToUpper();
             //    if (response == "YES" || response == "Y")
             //    {
             //        return true;
@@ -143,7 +148,7 @@ namespace Zork
             //    }
             //    else
             //    {
-            //        Instance.Output.Write("Please answer yes or no.> ");
+            //        Output.Write("Please answer yes or no.> ");
             //    }
             //}
         }
@@ -158,5 +163,9 @@ namespace Zork
         private string WelcomeMessage = null;
 
         private bool mIsRestarting;
+
+        public string[] inputString;
+        public char delimiter = ' ';
+        public bool responseInput = false;
     }
 }

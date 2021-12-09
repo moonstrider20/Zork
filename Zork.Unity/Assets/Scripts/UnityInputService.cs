@@ -8,7 +8,20 @@ public class UnityInputService : MonoBehaviour, IInputService
     [SerializeField]
     private TMP_InputField InputField;
 
-    public event EventHandler<string> InputRecieved;
+    public event EventHandler<string> InputReceived;
+
+    public string ReadLine()
+    {
+        throw new NotImplementedException();
+        //if (Input.GetKey(KeyCode.Return))
+        //{
+        //    string inputString = InputField.text;
+        //    if (string.IsNullOrWhiteSpace(inputString) == false)
+        //    {
+        //        return inputString;
+        //    }
+        //}
+    }
 
     void Update()
     {
@@ -17,7 +30,7 @@ public class UnityInputService : MonoBehaviour, IInputService
             string inputString = InputField.text;
             if (string.IsNullOrWhiteSpace(inputString) == false)
             {
-                InputRecieved?.Invoke(this, inputString);
+                InputReceived?.Invoke(this, inputString);
             }
 
             InputField.text = string.Empty;

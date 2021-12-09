@@ -16,7 +16,7 @@ namespace Zork
         public IEnumerable<string> Verbs { get; }
         public CommandAttribute(string commandName, string verb) :
             this(commandName, new string[] { verb })
-        { 
+        {
         }
 
         public CommandAttribute(string commandName, string[] verbs)

@@ -9,9 +9,10 @@ namespace Zork
         public string Name { get; set; }
         public string[] Verbs { get; }
         public Action<Game, CommandContext> Action { get; }
+
         public Command(string name, string verb, Action<Game, CommandContext> action) :
             this(name, new string[] { verb }, action)
-        { 
+        {
         }
 
         public Command(string name, IEnumerable<string> verbs, Action<Game, CommandContext> action)
@@ -21,9 +22,9 @@ namespace Zork
             Action = action;
         }
 
-        public static bool operator == (Command lhs, Command rhs)
+        public static bool operator ==(Command lhs, Command rhs)
         {
-            if (ReferenceEquals(lhs,rhs))
+            if (ReferenceEquals(lhs, rhs))
             {
                 return true;
             }
